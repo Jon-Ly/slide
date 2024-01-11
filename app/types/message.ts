@@ -7,6 +7,7 @@ export const Message = z.object({
   createdAt: z.string(),
   updatedAt: z.string().optional(),
   senderName: z.string(),
+  userId: z.string(),
 });
 
 export const GetAllMessages = getAllType(Message);

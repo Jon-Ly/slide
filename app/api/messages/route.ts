@@ -17,30 +17,35 @@ export async function GET(
       id: 1,
       senderName: 'Curious George',
       text: 'Hello World',
+      userId: '1'
     },
     {
       createdAt: new Date(2023, 2, 2, 10, 10, 10).toISOString(),
       id: 2,
       senderName: 'Man in Yellow Hat',
       text: 'George, how are you typing?',
+      userId: '2'
     },
     {
       createdAt: new Date(2023, 2, 2, 10, 12, 34).toISOString(),
       id: 3,
       senderName: 'Man in Yellow Hat',
       text: 'Hello?',
+      userId: '2'
     },
     {
       createdAt: new Date(2023, 2, 3, 18, 1, 5).toISOString(),
       id: 4,
       senderName: 'Curious George',
       text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim',
+      userId: '1'
     },
     {
       createdAt: new Date(2023, 2, 2, 18, 29, 36).toISOString(),
       id: 5,
       senderName: 'Man in Yellow Hat',
       text: 'You found the lorem ipsum feature!',
+      userId: '1'
     },
   ];
 
