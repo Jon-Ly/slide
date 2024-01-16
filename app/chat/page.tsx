@@ -3,23 +3,29 @@ import TextInput from '../components/text-input';
 import { GetAllMessages } from '../types/message';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 
-export default async function ChatPage() {
-  const loggedInUser = '1';
-
-  const messages = (await (
-    await fetch(`${process.env.API_URL}/api/messages?pagenumber=1&pagesize=10`, {
+async function getMessages() {
+  const messages = await fetch(
+    `${process.env.API_URL}/api/messages?pagenumber=1&pagesize=10`,
+    {
       method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-  ).json()) as GetAllMessages;
+    }
+  );
+
+  if (messages.ok === false) {
+    throw new Error('Failed to fetch messages');
+  }
 
   try {
-    GetAllMessages.parse(messages);
+    return GetAllMessages.parse(await messages.json());
   } catch (ex) {
     console.log(ex);
+    throw new Error('Failed to parse messages');
   }
+}
+
+export default async function ChatPage() {
+  const loggedInUser = '1';
+  const messages = await getMessages();
 
   async function onSubmit(formData: FormData) {
     'use server';
@@ -57,7 +63,7 @@ export default async function ChatPage() {
           className='w-full'
         />
         <button type='submit' className='p-2 hover:bg-neutral-100 rounded-full'>
-          <FontAwesomeIcon icon={faPaperPlane} width={20} height={20}/>
+          <FontAwesomeIcon icon={faPaperPlane} width={20} height={20} />
         </button>
       </form>
     </main>
