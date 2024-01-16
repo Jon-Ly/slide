@@ -7,7 +7,7 @@ export default async function ChatPage() {
   const loggedInUser = '1';
 
   const messages = (await (
-    await fetch('http://localhost:3000/api/messages?pagenumber=1&pagesize=10', {
+    await fetch(`${process.env.API_URL}/api/messages?pagenumber=1&pagesize=10`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
