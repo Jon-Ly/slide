@@ -4,9 +4,6 @@ import TextInput from './components/text-input';
 export default function Home() {
   async function onSubmit(formData: FormData) {
     'use server';
-    // Login logic here
-
-    console.log(formData);
 
     redirect('/chat');
   }
@@ -18,7 +15,6 @@ export default function Home() {
         <form
           className='m-auto w-96 flex flex-col gap-4'
           action={onSubmit}
-          method='POST'
         >
           <TextInput label='Username' name='username' type='email' />
           <TextInput label='Password' name='password' type='password' />

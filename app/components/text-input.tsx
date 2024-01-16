@@ -14,7 +14,7 @@ export default function TextInput(props: TextInputProps) {
       {labelCompoennt || label}
       <input
         type={type}
-        className='border border-gray-300 rounded-md py-1 px-2 w-full text-black active:outline-none focus:outline-none focus:ring-2 focus:ring-blue-500 bg-neutral-50'
+        className='border border-gray-300 rounded-md py-1 px-2 w-full text-black active:outline-none focus:outline-none focus:ring-1 focus:ring-neutral-400 bg-neutral-50'
         name={name}
         placeholder={placeholder}
       />
