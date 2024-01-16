@@ -12,7 +12,7 @@ async function getMessages() {
   );
 
   if (messages.ok === false) {
-    throw new Error('Failed to fetch messages');
+    throw new Error(`Failed to fetch messages at ${process.env.API_URL}`);
   }
 
   try {
