@@ -2,30 +2,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import TextInput from '../components/text-input';
 import { GetAllMessages } from '../types/message';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
-
-async function getMessages() {
-  const messages = await fetch(
-    `${process.env.API_URL}/api/messages?pagenumber=1&pagesize=10`,
-    {
-      method: 'GET',
-    }
-  );
-
-  if (messages.ok === false) {
-    throw new Error(`Failed to fetch messages at ${process.env.API_URL}`);
-  }
-
-  try {
-    return GetAllMessages.parse(await messages.json());
-  } catch (ex) {
-    console.log(ex);
-    throw new Error('Failed to parse messages');
-  }
-}
+import { getMessages } from './actions';
 
 export default async function ChatPage() {
   const loggedInUser = '1';
-  const messages = await getMessages();
+  let messages = {} as GetAllMessages;
+  
+  try {
+    messages = GetAllMessages.parse(await getMessages());
+  } catch (ex) {
+    throw new Error(`Failed to parse messages: ${ex}`);
+  }
 
   async function onSubmit(formData: FormData) {
     'use server';
