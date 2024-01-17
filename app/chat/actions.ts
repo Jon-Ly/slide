@@ -18,7 +18,7 @@ export async function getMessages(
     skip: (pageNumber - 1) * pageSize,
     take: pageSize + 1,
     orderBy: {
-      createdAt: 'desc',
+      createdAt: 'asc',
     },
   });
 
