@@ -13,17 +13,17 @@ export async function getMessages(
 
   const url = `${process.env.API_URL}/api/messages?pageNumber=${pageNumber}&pageSize=${pageSize}`;
 
+  const res = await fetch(url, {
+    method: 'GET',
+  });
+
+  if (!res.ok) {
+    throw new Error(
+      `Failed to fetch messages: ${res.statusText} at ${url}`
+    );
+  }
+
   try {
-    const res = await fetch(url, {
-      method: 'GET',
-    });
-
-    if (!res.ok) {
-      throw new Error(
-        `Failed to fetch messages: ${res.statusText}`
-      );
-    }
-
     return PaginatedMessages.parse(await res.json());
   } catch (ex) {
     throw new Error(`Failed to parse messages: ${ex}`);
@@ -42,18 +42,18 @@ export async function postMessage(formData: FormData): Promise<{message: Message
     text: formData.get('text')?.toString()
   }
 
+  const res = await fetch(url, {
+    method: 'POST',
+    body: JSON.stringify(request),
+  });
+
+  if (!res.ok) {
+    throw new Error(
+      `Failed to fetch messages: ${res.statusText} at ${url}`
+    );
+  }
+
   try {
-    const res = await fetch(url, {
-      method: 'POST',
-      body: JSON.stringify(request),
-    });
-
-    if (!res.ok) {
-      throw new Error(
-        `Failed to post message: ${res.statusText}`
-      );
-    }
-
     return await res.json();
   } catch (ex) {
     throw new Error(`Failed to parse message: ${ex}`);
