@@ -1,6 +1,6 @@
 'use server';
 
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '../../generated/prisma-client';
 import { Message, PaginatedMessages } from '../types/message';
 import { Pagination } from '../types/pagination';
 
