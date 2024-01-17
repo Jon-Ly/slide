@@ -10,7 +10,7 @@ export type Message = Prisma.MessageGetPayload<{}>;
 export const Message = z.object({
   id: z.number(),
   text: z.string(),
-  createdAt: z.date(),
+  createdAt: z.coerce.date(), // forces any value to be passed through new Date()
   userId: z.number(),
 }) satisfies z.ZodType<Message>;
 

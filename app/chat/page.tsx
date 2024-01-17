@@ -1,24 +1,11 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import TextInput from '../components/text-input';
-import { PaginatedMessages } from '../types/message';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
-import { getMessages } from './actions';
+import { getMessages, postMessage } from './actions';
 
 export default async function ChatPage() {
   const loggedInUser = 1;
-  let messages = {data: [], hasMoreData: false} as PaginatedMessages;
-  
-  try {
-    messages = PaginatedMessages.parse(await getMessages());
-  } catch (ex) {
-    throw new Error(`Failed to parse messages: ${ex}`);
-  }
-
-  async function onSubmit(formData: FormData) {
-    'use server';
-
-    console.log(formData);
-  }
+  let messages = await getMessages();
 
   return (
     <main className='m-auto w-[70%] h-full flex flex-col justify-end'>
@@ -42,11 +29,11 @@ export default async function ChatPage() {
           }
         })}
       </section>
-      <form className='py-4 border-t flex gap-2 px-2' action={onSubmit}>
+      <form className='py-4 border-t flex gap-2 px-2' action={postMessage}>
         <TextInput
           type='text'
           placeholder='Type something...'
-          name='message'
+          name='text'
           className='w-full'
         />
         <button type='submit' className='p-2 hover:bg-neutral-100 rounded-full'>
