@@ -1,7 +1,10 @@
 'use server';
 
+import { PrismaClient } from '@prisma/client';
 import { Message, PaginatedMessages } from '../types/message';
 import { Pagination } from '../types/pagination';
+
+const prisma = new PrismaClient();
 
 export async function getMessages(
   pagination?: Pagination
@@ -11,51 +14,39 @@ export async function getMessages(
     pageSize: 20,
   };
 
-  const url = `${process.env.API_URL}/api/messages?pageNumber=${pageNumber}&pageSize=${pageSize}`;
-
-  const res = await fetch(url, {
-    method: 'GET',
+  const messages = await prisma.message.findMany({
+    skip: (pageNumber - 1) * pageSize,
+    take: pageSize + 1,
+    orderBy: {
+      createdAt: 'desc',
+    },
   });
 
-  if (!res.ok) {
-    throw new Error(
-      `Failed to fetch messages: ${res.statusText} at ${url}`
-    );
-  }
+  const hasMoreData = messages.length > pageSize;
 
-  try {
-    return PaginatedMessages.parse(await res.json());
-  } catch (ex) {
-    throw new Error(`Failed to parse messages: ${ex}`);
-  }
+  return {
+    data: messages.slice(0, pageSize),
+    hasMoreData,
+  };
 }
 
-export async function postMessage(formData: FormData): Promise<{message: Message} | null> {
-  const url = `${process.env.API_URL}/api/messages`;
+export async function postMessage(
+  formData: FormData
+): Promise<{ message: Message } | null> {
   const text = formData.get('text')?.toString();
 
   if (!text?.trim()) {
     return null;
   }
 
-  const request = {
-    text: formData.get('text')?.toString()
-  }
-
-  const res = await fetch(url, {
-    method: 'POST',
-    body: JSON.stringify(request),
+  const message = await prisma.message.create({
+    data: {
+      text,
+      userId: 1,
+    },
   });
 
-  if (!res.ok) {
-    throw new Error(
-      `Failed to fetch messages: ${res.statusText} at ${url}`
-    );
-  }
-
-  try {
-    return await res.json();
-  } catch (ex) {
-    throw new Error(`Failed to parse message: ${ex}`);
-  }
+  return {
+    message,
+  };
 }
