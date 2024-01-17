@@ -1,8 +1,9 @@
 'use server';
 
-import { PrismaClient } from '../../generated/prisma-client';
-import { Message, PaginatedMessages } from '../types/message';
-import { Pagination } from '../types/pagination';
+import { PrismaClient } from '@/generated/prisma-client';
+import { Message, PaginatedMessages } from '@/app/types/message';
+import { Pagination } from '@/app/types/pagination';
+import { revalidatePath } from 'next/cache';
 
 const prisma = new PrismaClient();
 
@@ -45,6 +46,8 @@ export async function postMessage(
       userId: 1,
     },
   });
+
+  revalidatePath('/chat')
 
   return {
     message,
