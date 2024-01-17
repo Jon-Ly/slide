@@ -7,13 +7,17 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest"
+    "test": "jest",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.5.1",
     "@fortawesome/free-solid-svg-icons": "^6.5.1",
     "@fortawesome/react-fontawesome": "^0.2.0",
+    "@prisma/client": "^5.8.1",
+    "@vercel/postgres": "^0.5.1",
     "next": "14.0.4",
+    "prisma": "^5.8.1",
     "react": "^18",
     "react-dom": "^18",
     "zod": "^3.22.4"

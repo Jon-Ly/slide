@@ -58,3 +58,4 @@ amplifytools.xcconfig
 #amplify-do-not-edit-end
 
 .env*.local
+.vercel

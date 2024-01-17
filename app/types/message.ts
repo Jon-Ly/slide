@@ -1,16 +1,9 @@
+import { type PaginatedData } from './paginated-data';
+import { Prisma } from '@prisma/client';
 import { z } from 'zod';
-import getAllType from './get-all';
 
-export const Message = z.object({
-  id: z.number(),
-  text: z.string(),
-  createdAt: z.string(),
-  updatedAt: z.string().optional(),
-  senderName: z.string(),
-  userId: z.string(),
-});
+export type Message = Prisma.MessageGetPayload<{}>;
+export const Message = z.ZodType<Message>;
 
-export const GetAllMessages = getAllType(Message);
-
-export type Message = z.infer<typeof Message>;
-export type GetAllMessages = z.infer<typeof GetAllMessages>;
+export type PaginatedMessages = PaginatedData<Message>;
+export const PaginatedMessages = z.ZodType<PaginatedMessages>;
