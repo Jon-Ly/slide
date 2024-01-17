@@ -57,5 +57,6 @@ amplifytools.xcconfig
 **.sample
 #amplify-do-not-edit-end
 
+.env
 .env*.local
 .vercel
