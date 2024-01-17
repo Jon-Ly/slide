@@ -1,15 +1,15 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import TextInput from '../components/text-input';
-import { GetAllMessages } from '../types/message';
+import { PaginatedMessages } from '../types/message';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import { getMessages } from './actions';
 
 export default async function ChatPage() {
-  const loggedInUser = '1';
-  let messages = {} as GetAllMessages;
+  const loggedInUser = 1;
+  let messages = {data: [], hasMoreData: false} as PaginatedMessages;
   
   try {
-    messages = GetAllMessages.parse(await getMessages());
+    messages = PaginatedMessages.parse(await getMessages());
   } catch (ex) {
     throw new Error(`Failed to parse messages: ${ex}`);
   }
