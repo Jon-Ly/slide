@@ -1,8 +1,10 @@
 import { type PaginatedData } from './paginated-data';
-import { Prisma, PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient } from '../../generated/prisma-client';
 import { z } from 'zod';
 
 const prisma = new PrismaClient();
+
+// https://github.com/colinhacks/zod/issues/1495#issuecomment-1339832685
 
 export type Message = Prisma.MessageGetPayload<{}>;
 export const Message = z.object({

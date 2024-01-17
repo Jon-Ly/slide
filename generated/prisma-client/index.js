@@ -134,7 +134,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\JonJon\\Desktop\\Development\\repos\\slide\\generated\\client",
+      "value": "C:\\Users\\JonJon\\Desktop\\Development\\repos\\slide\\generated\\prisma-client",
       "fromEnvVar": null
     },
     "config": {
@@ -170,8 +170,8 @@ const config = {
       }
     }
   },
-  "inlineSchema": "Z2VuZXJhdG9yIGNsaWVudCB7DQogIHByb3ZpZGVyID0gInByaXNtYS1jbGllbnQtanMiDQogIG91dHB1dCAgID0gIi4vZ2VuZXJhdGVkL2NsaWVudCINCn0NCiANCmRhdGFzb3VyY2UgZGIgew0KICBwcm92aWRlciA9ICJwb3N0Z3Jlc3FsIg0KICB1cmwgPSBlbnYoIlBPU1RHUkVTX1BSSVNNQV9VUkwiKSAvLyB1c2VzIGNvbm5lY3Rpb24gcG9vbGluZw0KICBkaXJlY3RVcmwgPSBlbnYoIlBPU1RHUkVTX1VSTF9OT05fUE9PTElORyIpIC8vIHVzZXMgYSBkaXJlY3QgY29ubmVjdGlvbg0KfQ0KIA0KbW9kZWwgVXNlciB7DQogIGlkICAgICAgICBJbnQgICAgICBAaWQgQGRlZmF1bHQoYXV0b2luY3JlbWVudCgpKQ0KICBuYW1lICAgICAgU3RyaW5nDQogIGVtYWlsICAgICBTdHJpbmcgICBAdW5pcXVlDQogIGltYWdlICAgICBTdHJpbmc/DQogIGNyZWF0ZWRBdCBEYXRlVGltZSBAZGVmYXVsdChub3coKSkNCiAgbWVzc2FnZXMgIE1lc3NhZ2VbXQ0KfQ0KDQptb2RlbCBNZXNzYWdlIHsNCiAgaWQgICAgICAgIEludCAgICAgIEBpZCBAZGVmYXVsdChhdXRvaW5jcmVtZW50KCkpDQogIHRleHQgICAgICBTdHJpbmcNCiAgY3JlYXRlZEF0IERhdGVUaW1lIEBkZWZhdWx0KG5vdygpKQ0KICB1c2VyICAgICAgVXNlciAgICAgQHJlbGF0aW9uKGZpZWxkczogW3VzZXJJZF0sIHJlZmVyZW5jZXM6IFtpZF0pDQogIHVzZXJJZCAgICBJbnQNCn0=",
-  "inlineSchemaHash": "8c57eac2ae3b4fd6d0c74a37705db493853c7fb88bc78587db8aa007889696c1",
+  "inlineSchema": "Z2VuZXJhdG9yIGNsaWVudCB7DQogIHByb3ZpZGVyID0gInByaXNtYS1jbGllbnQtanMiDQogIG91dHB1dCAgID0gIi4vZ2VuZXJhdGVkL3ByaXNtYS1jbGllbnQiDQp9DQogDQpkYXRhc291cmNlIGRiIHsNCiAgcHJvdmlkZXIgPSAicG9zdGdyZXNxbCINCiAgdXJsID0gZW52KCJQT1NUR1JFU19QUklTTUFfVVJMIikgLy8gdXNlcyBjb25uZWN0aW9uIHBvb2xpbmcNCiAgZGlyZWN0VXJsID0gZW52KCJQT1NUR1JFU19VUkxfTk9OX1BPT0xJTkciKSAvLyB1c2VzIGEgZGlyZWN0IGNvbm5lY3Rpb24NCn0NCiANCm1vZGVsIFVzZXIgew0KICBpZCAgICAgICAgSW50ICAgICAgQGlkIEBkZWZhdWx0KGF1dG9pbmNyZW1lbnQoKSkNCiAgbmFtZSAgICAgIFN0cmluZw0KICBlbWFpbCAgICAgU3RyaW5nICAgQHVuaXF1ZQ0KICBpbWFnZSAgICAgU3RyaW5nPw0KICBjcmVhdGVkQXQgRGF0ZVRpbWUgQGRlZmF1bHQobm93KCkpDQogIG1lc3NhZ2VzICBNZXNzYWdlW10NCn0NCg0KbW9kZWwgTWVzc2FnZSB7DQogIGlkICAgICAgICBJbnQgICAgICBAaWQgQGRlZmF1bHQoYXV0b2luY3JlbWVudCgpKQ0KICB0ZXh0ICAgICAgU3RyaW5nDQogIGNyZWF0ZWRBdCBEYXRlVGltZSBAZGVmYXVsdChub3coKSkNCiAgdXNlciAgICAgIFVzZXIgICAgIEByZWxhdGlvbihmaWVsZHM6IFt1c2VySWRdLCByZWZlcmVuY2VzOiBbaWRdKQ0KICB1c2VySWQgICAgSW50DQp9",
+  "inlineSchemaHash": "325492c6917bd50ab243a9cb95749ccd9b6ab84e2777bfc5175e13f654dc57e6",
   "noEngine": false
 }
 
@@ -180,8 +180,8 @@ const fs = require('fs')
 config.dirname = __dirname
 if (!fs.existsSync(path.join(__dirname, 'schema.prisma'))) {
   const alternativePaths = [
-    "generated/client",
-    "client",
+    "generated/prisma-client",
+    "prisma-client",
   ]
   
   const alternativePath = alternativePaths.find((altPath) => {
@@ -210,7 +210,7 @@ Object.assign(exports, Prisma)
 
 // file annotations for bundling tools to include these files
 path.join(__dirname, "query_engine-windows.dll.node");
-path.join(process.cwd(), "generated/client/query_engine-windows.dll.node")
+path.join(process.cwd(), "generated/prisma-client/query_engine-windows.dll.node")
 // file annotations for bundling tools to include these files
 path.join(__dirname, "schema.prisma");
-path.join(process.cwd(), "generated/client/schema.prisma")
+path.join(process.cwd(), "generated/prisma-client/schema.prisma")
