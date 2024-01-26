@@ -1,11 +1,54 @@
-import { redirect } from 'next/navigation';
+'use client';
+
 import TextInput from './components/text-input';
+import { FormEvent, useEffect } from 'react';
+import { getRedirectResult } from 'firebase/auth';
+import { authConfig } from './firebase/config';
+import { useRouter } from 'next/navigation';
 
-export default function Home() {
-  async function onSubmit(formData: FormData) {
-    'use server';
+export default function Home({}) {
+  const router = useRouter();
 
-    redirect('/chat');
+  useEffect(() => {
+    getRedirectResult(authConfig).then(async (userCred) => {
+      if (!userCred) {
+        return;
+      }
+
+      fetch('/api/login', {
+        method: 'POST',
+        body: JSON.stringify({}),
+        headers: {
+          Authorization: `Bearer ${await userCred.user.getIdToken()}`,
+        },
+      }).then((response) => {
+        if (response.status === 200) {
+          router.replace('/chat');
+        }
+      });
+    });
+  }, [router]);
+
+  async function signInWithEmail(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+
+    try {
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (res.ok) {
+        router.replace('/chat');
+      } else {
+        const errorResponse = await res.json();
+        console.error(errorResponse);
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
+    }
   }
 
   return (
@@ -14,9 +57,9 @@ export default function Home() {
         <h1 className='text-center font-bold italic p-4'>Slide</h1>
         <form
           className='m-auto w-96 flex flex-col gap-4'
-          action={onSubmit}
+          onSubmit={signInWithEmail}
         >
-          <TextInput label='Username' name='username' type='email' />
+          <TextInput label='Email' name='email' type='email' />
           <TextInput label='Password' name='password' type='password' />
           <button
             type='submit'

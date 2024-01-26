@@ -43,7 +43,7 @@ export async function postMessage(
   const message = await prisma.message.create({
     data: {
       text,
-      userId: 1,
+      userId: '1',
     },
   });
 

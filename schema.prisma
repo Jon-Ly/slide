@@ -10,7 +10,7 @@ datasource db {
 }
  
 model User {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @unique
   name      String
   email     String   @unique
   image     String?
@@ -23,5 +23,5 @@ model Message {
   text      String
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id])
-  userId    Int
+  userId    String
 }

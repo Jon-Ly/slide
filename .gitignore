@@ -60,3 +60,5 @@ amplifytools.xcconfig
 .env
 .env*.local
 .vercel
+
+*.log

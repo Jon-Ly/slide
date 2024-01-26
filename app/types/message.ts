@@ -9,7 +9,7 @@ export const Message = z.object({
   id: z.number(),
   text: z.string(),
   createdAt: z.coerce.date(), // forces any value to be passed through new Date()
-  userId: z.number(),
+  userId: z.string(),
 }) satisfies z.ZodType<Message>;
 
 export type PaginatedMessages = PaginatedData<Message>;
