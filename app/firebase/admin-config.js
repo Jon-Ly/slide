@@ -6,8 +6,7 @@ const { private_key } = JSON.parse(process.env.FIREBASE_SECRET_KEY);
 const firebaseAdminConfig = {
   credential: credential.cert({
     projectId: 'slide-753b8',
-    clientEmail:
-      'firebase-adminsdk-ekguu@chat-app-test-6b379.iam.gserviceaccount.com',
+    clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
     privateKey: private_key,
   }),
 };

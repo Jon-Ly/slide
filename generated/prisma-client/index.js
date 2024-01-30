@@ -161,7 +161,6 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
-  "postinstall": false,
   "ciName": "Vercel",
   "inlineDatasources": {
     "db": {
@@ -172,8 +171,7 @@ const config = {
     }
   },
   "inlineSchema": "Z2VuZXJhdG9yIGNsaWVudCB7DQogIHByb3ZpZGVyID0gInByaXNtYS1jbGllbnQtanMiDQogIG91dHB1dCAgID0gIi4vZ2VuZXJhdGVkL3ByaXNtYS1jbGllbnQiDQp9DQogDQpkYXRhc291cmNlIGRiIHsNCiAgcHJvdmlkZXIgPSAicG9zdGdyZXNxbCINCiAgdXJsID0gZW52KCJQT1NUR1JFU19QUklTTUFfVVJMIikgLy8gdXNlcyBjb25uZWN0aW9uIHBvb2xpbmcgDQogIGRpcmVjdFVybCA9IGVudigiUE9TVEdSRVNfVVJMX05PTl9QT09MSU5HIikgLy8gdXNlcyBhIGRpcmVjdCBjb25uZWN0aW9uDQp9DQogDQptb2RlbCBVc2VyIHsNCiAgaWQgICAgICAgIFN0cmluZyAgIEBpZCBAdW5pcXVlDQogIG5hbWUgICAgICBTdHJpbmcNCiAgZW1haWwgICAgIFN0cmluZyAgIEB1bmlxdWUNCiAgaW1hZ2UgICAgIFN0cmluZz8NCiAgY3JlYXRlZEF0IERhdGVUaW1lIEBkZWZhdWx0KG5vdygpKQ0KICBtZXNzYWdlcyAgTWVzc2FnZVtdDQp9DQoNCm1vZGVsIE1lc3NhZ2Ugew0KICBpZCAgICAgICAgSW50ICAgICAgQGlkIEBkZWZhdWx0KGF1dG9pbmNyZW1lbnQoKSkNCiAgdGV4dCAgICAgIFN0cmluZw0KICBjcmVhdGVkQXQgRGF0ZVRpbWUgQGRlZmF1bHQobm93KCkpDQogIHVzZXIgICAgICBVc2VyICAgICBAcmVsYXRpb24oZmllbGRzOiBbdXNlcklkXSwgcmVmZXJlbmNlczogW2lkXSkNCiAgdXNlcklkICAgIFN0cmluZw0KfQ==",
-  "inlineSchemaHash": "0f330e0adc5e0cd110b4636c9a5853f339c336c33c49255e5dffa7d99dc5cd70",
-  "noEngine": false
+  "inlineSchemaHash": "0f330e0adc5e0cd110b4636c9a5853f339c336c33c49255e5dffa7d99dc5cd70"
 }
 
 const fs = require('fs')

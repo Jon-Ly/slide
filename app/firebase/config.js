@@ -18,11 +18,6 @@ const firebaseConfig = {
 const firebaseApp =
   getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
 
-const authConfig =
-  process.env.ENVIRONMENT === 'development' ? getAuth() : getAuth(firebaseApp);
-
-if (process.env.ENVIRONMENT === 'development') {
-  connectAuthEmulator(authConfig, 'http://localhost:9099');
-}
+const authConfig = getAuth(firebaseApp);
 
 export { authConfig };
