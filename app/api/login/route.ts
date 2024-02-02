@@ -2,11 +2,13 @@ import { auth } from 'firebase-admin';
 import { cookies, headers } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import { customInitApp } from '@/app/firebase/admin-config';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { User, signInWithEmailAndPassword } from 'firebase/auth';
 import { authConfig } from '@/app/firebase/config';
 
 // Init the Firebase SDK every time the server is called
 customInitApp();
+
+const sessionLifetime = 3 * 24 * 60 * 60 * 1000; // 3 days in milliseconds
 
 async function handleBearerToken(authorization: string) {
   if (authorization?.startsWith('Bearer ')) {
@@ -14,14 +16,13 @@ async function handleBearerToken(authorization: string) {
     const decodedToken = await auth().verifyIdToken(idToken);
 
     if (decodedToken) {
-      const expiresIn = 5 * 60 * 1000;
       const sessionCookie = await auth().createSessionCookie(idToken, {
-        expiresIn,
+        expiresIn: sessionLifetime,
       });
       const options = {
         name: 'session',
         value: sessionCookie,
-        maxAge: expiresIn,
+        maxAge: sessionLifetime / 1000, // seconds
         httpOnly: true,
         secure: true,
       };
@@ -41,26 +42,13 @@ async function handleEmailAndPassword(email: string, password: string) {
     );
 
     const user = userCredential.user;
-    const authorization = await user.getIdToken();
+    const idToken = await user.getIdToken();
 
-    if (authorization) {
-      const idToken = authorization;
+    if (idToken) {
       const decodedToken = await auth().verifyIdToken(idToken);
 
       if (decodedToken) {
-        const expiresIn = 5 * 60 * 1000;
-        const sessionCookie = await auth().createSessionCookie(idToken, {
-          expiresIn,
-        });
-        const options = {
-          name: 'session',
-          value: sessionCookie,
-          maxAge: expiresIn,
-          httpOnly: true,
-          secure: true,
-        };
-
-        cookies().set(options);
+        const options = await refreshToken(user);
         return NextResponse.json({ options }, { status: 200 });
       }
     }
@@ -80,6 +68,23 @@ async function handleEmailAndPassword(email: string, password: string) {
 
     return NextResponse.json({ error: errorMessage }, { status: 401 });
   }
+}
+
+async function refreshToken(user: User, forceRefresh = false) {
+  const idToken = await user.getIdToken(forceRefresh);
+  const sessionCookie = await auth().createSessionCookie(idToken, {
+    expiresIn: sessionLifetime,
+  });
+  const options = {
+    name: 'session',
+    value: sessionCookie,
+    maxAge: sessionLifetime / 1000, // seconds
+    httpOnly: true,
+    secure: true,
+  };
+
+  cookies().set(options);
+  return options;
 }
 
 export async function POST(request: NextRequest, response: NextResponse) {
@@ -118,11 +123,18 @@ export async function GET(request: NextRequest) {
   }
 
   //Use Firebase Admin to validate the session cookie
-  const decodedClaims = await auth().verifySessionCookie(session, true);
+  try {
+    const decodedClaims = await auth().verifySessionCookie(session, true);
 
-  if (!decodedClaims) {
-    return NextResponse.json({ isLogged: false }, { status: 401 });
+    const user = await auth().getUser(decodedClaims.uid);
+
+    if (!decodedClaims) {
+      return NextResponse.json({ isLoggedIn: false }, { status: 401 });
+    }
+  
+    return NextResponse.json({ isLoggedIn: true }, { status: 200 });
+  } catch (error) {
+    // Session likely expired, don't throw error to client
+    return NextResponse.json({ isLoggedIn: false }, { status: 200 });
   }
-
-  return NextResponse.json({ isLogged: true }, { status: 200 });
 }

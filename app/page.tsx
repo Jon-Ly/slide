@@ -2,31 +2,25 @@
 
 import TextInput from './components/text-input';
 import { FormEvent, useEffect } from 'react';
-import { getRedirectResult } from 'firebase/auth';
-import { authConfig } from './firebase/config';
 import { useRouter } from 'next/navigation';
 
 export default function Home({}) {
   const router = useRouter();
 
   useEffect(() => {
-    getRedirectResult(authConfig).then(async (userCred) => {
-      if (!userCred) {
-        return;
-      }
-
+    try {
       fetch('/api/login', {
-        method: 'POST',
-        body: JSON.stringify({}),
-        headers: {
-          Authorization: `Bearer ${await userCred.user.getIdToken()}`,
-        },
-      }).then((response) => {
-        if (response.status === 200) {
-          router.replace('/chat');
-        }
-      });
-    });
+        method: 'GET',
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((response: { isLoggedIn: boolean }) => {
+          if (response.isLoggedIn) {
+            router.replace('/chat');
+          }
+        });
+    } catch (error) {}
   }, [router]);
 
   async function signInWithEmail(event: FormEvent<HTMLFormElement>) {

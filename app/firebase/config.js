@@ -1,6 +1,5 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp, getApps } from 'firebase/app';
-import { connectAuthEmulator } from 'firebase/auth';
 import { getAuth } from 'firebase/auth';
 
 const firebaseConfig = {
