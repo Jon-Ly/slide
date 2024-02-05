@@ -119,14 +119,12 @@ export async function GET(request: NextRequest) {
 
   //Validate if the cookie exist in the request
   if (!session) {
-    return NextResponse.json({ isLogged: false }, { status: 401 });
+    return NextResponse.json({ isLogged: false }, { status: 200 });
   }
 
   //Use Firebase Admin to validate the session cookie
   try {
     const decodedClaims = await auth().verifySessionCookie(session, true);
-
-    const user = await auth().getUser(decodedClaims.uid);
 
     if (!decodedClaims) {
       return NextResponse.json({ isLoggedIn: false }, { status: 401 });
@@ -135,6 +133,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ isLoggedIn: true }, { status: 200 });
   } catch (error) {
     // Session likely expired, don't throw error to client
+    cookies().delete('session');
     return NextResponse.json({ isLoggedIn: false }, { status: 200 });
   }
 }

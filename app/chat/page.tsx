@@ -14,20 +14,34 @@ export default function ChatPage() {
   const router = useRouter();
 
   useEffect(() => {
-    getMessages().then((data) => {
-      setMessages(data);
-    });
-  }, []);
+    try {
+      fetch('/api/login', {
+        method: 'GET',
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((response: { isLoggedIn: boolean }) => {
+          if (response.isLoggedIn) {
+            getMessages().then((data) => {
+              setMessages(data);
+            });
+          } else {
+            router.replace('/');
+          }
+        });
+    } catch (error) {}
+  }, [router]);
   
   async function signOutUser() {
     await signOut(authConfig);
 
-    const response = await fetch("http://localhost:3000/api/signOut", {
+    const response = await fetch("http://localhost:3000/api/signout", {
       method: "POST",
     });
 
     if (response.status === 200) {
-      router.push("/login");
+      router.push("/");
     }
   }
 

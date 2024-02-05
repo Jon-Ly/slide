@@ -10,14 +10,16 @@ export async function middleware(request: NextRequest, response: NextResponse) {
   }
 
   //Call the authentication endpoint
-  const responseAPI = await fetch("http://localhost:3000/api/login", {
+  const validateTokenResponse = await fetch("http://localhost:3000/api/login", {
     headers: {
       Cookie: `session=${session?.value}`,
     },
   });
 
+  const responseJson = await validateTokenResponse.json();
+
   //Return to /login if token is not authorized
-  if (responseAPI.status !== 200) {
+  if (responseJson.isLoggedIn === false) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
