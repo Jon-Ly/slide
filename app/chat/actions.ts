@@ -4,6 +4,7 @@ import { PrismaClient } from '@/generated/prisma-client';
 import { Message, PaginatedMessages } from '@/app/types/message';
 import { Pagination } from '@/app/types/pagination';
 import { revalidatePath } from 'next/cache';
+import { getUser } from '../actions';
 
 const prisma = new PrismaClient();
 
@@ -40,10 +41,12 @@ export async function postMessage(
     return null;
   }
 
+  const user = await getUser();
+
   const message = await prisma.message.create({
     data: {
       text,
-      userId: '1',
+      userId: user.uid,
     },
   });
 

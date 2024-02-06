@@ -3,24 +3,34 @@
 import TextInput from './components/text-input';
 import { FormEvent, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { LoginCheck } from './types/login-check';
 
-export default function Home({}) {
+export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
+    const abortController = new AbortController();
+    const signal = abortController.signal;
+
     try {
       fetch('/api/login', {
         method: 'GET',
+        signal,
       })
         .then((response) => {
           return response.json();
         })
-        .then((response: { isLoggedIn: boolean }) => {
-          if (response.isLoggedIn) {
+        .then((response: LoginCheck) => {
+          if (response.isLoggedIn && response.user) {
+            localStorage.setItem('uid', response.user.uid);
             router.replace('/chat');
           }
         });
     } catch (error) {}
+
+    return () => {
+      abortController.abort();
+    };
   }, [router]);
 
   async function signInWithEmail(event: FormEvent<HTMLFormElement>) {

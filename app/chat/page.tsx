@@ -7,22 +7,29 @@ import { PaginatedMessages } from '../types/message';
 import { signOut } from 'firebase/auth';
 import { authConfig } from '../firebase/config'; 
 import { useRouter } from 'next/navigation';
+import { LoginCheck } from '../types/login-check';
 
 export default function ChatPage() {
-  const loggedInUser = '1';
+  const [uid, setUid] = useState<string>('');
   const [messages, setMessages] = useState<PaginatedMessages>();
   const router = useRouter();
 
   useEffect(() => {
+    const abortController = new AbortController();
+    const signal = abortController.signal;
+
     try {
       fetch('/api/login', {
         method: 'GET',
+        signal,
       })
         .then((response) => {
           return response.json();
         })
-        .then((response: { isLoggedIn: boolean }) => {
-          if (response.isLoggedIn) {
+        .then((response: LoginCheck) => {
+          if (response.isLoggedIn && response.user) {
+            localStorage.setItem('uid', response.user.uid);
+            setUid(response.user.uid);
             getMessages().then((data) => {
               setMessages(data);
             });
@@ -31,6 +38,10 @@ export default function ChatPage() {
           }
         });
     } catch (error) {}
+
+    return () => {
+      abortController.abort();
+    };
   }, [router]);
   
   async function signOutUser() {
@@ -53,7 +64,7 @@ export default function ChatPage() {
       <section className='flex flex-col gap-2 overflow-y-auto px-2 py-4'>
         {!messages && <div>Start chatting!</div>}
         {messages?.data.map((message) => {
-          if (message.userId === loggedInUser) {
+          if (message.userId === uid) {
             return (
               <div
                 className='bg-red-200 max-w-96 w-fit p-2 self-end'

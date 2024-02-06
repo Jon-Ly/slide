@@ -129,8 +129,10 @@ export async function GET(request: NextRequest) {
     if (!decodedClaims) {
       return NextResponse.json({ isLoggedIn: false }, { status: 401 });
     }
-  
-    return NextResponse.json({ isLoggedIn: true }, { status: 200 });
+    
+    cookies().set('uid', decodedClaims.uid);
+    const user = await auth().getUser(decodedClaims.uid);
+    return NextResponse.json({ isLoggedIn: true, user }, { status: 200 });
   } catch (error) {
     // Session likely expired, don't throw error to client
     cookies().delete('session');
