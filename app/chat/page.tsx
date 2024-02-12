@@ -1,6 +1,6 @@
 'use client';
 
-import { signOut, useSession } from 'next-auth/react';
+import { signOut } from 'next-auth/react';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { PaginatedMessages } from '../types/message';
@@ -10,22 +10,9 @@ export default function ChatPage() {
   const [uid, setUid] = useState<string>('');
   const [messages, setMessages] = useState<PaginatedMessages>();
   const router = useRouter();
-  const session = useSession();
-  
-  if (!session) {
-    router.replace('/');
-  }
   
   async function signOutUser() {
     await signOut({redirect: true});
-
-    const response = await fetch("http://localhost:3000/api/signout", {
-      method: "POST",
-    });
-
-    if (response.status === 200) {
-      router.push("/");
-    }
   }
 
   return (
