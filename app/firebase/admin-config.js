@@ -3,9 +3,9 @@ import { initializeApp, getApps } from 'firebase-admin/app';
 
 const { private_key } = JSON.parse(process.env.FIREBASE_SECRET_KEY);
 
-const firebaseAdminConfig = {
+export const firebaseAdminConfig = {
   credential: credential.cert({
-    projectId: 'slide-753b8',
+    projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
     clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
     privateKey: private_key,
   }),

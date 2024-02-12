@@ -1,51 +1,23 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { getMessages } from './actions';
-import ChatForm from './form';
-import { PaginatedMessages } from '../types/message';
-import { signOut } from 'firebase/auth';
-import { authConfig } from '../firebase/config'; 
+import { signOut, useSession } from 'next-auth/react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { LoginCheck } from '../types/login-check';
+import { PaginatedMessages } from '../types/message';
+import ChatForm from './form';
 
 export default function ChatPage() {
   const [uid, setUid] = useState<string>('');
   const [messages, setMessages] = useState<PaginatedMessages>();
   const router = useRouter();
-
-  useEffect(() => {
-    const abortController = new AbortController();
-    const signal = abortController.signal;
-
-    try {
-      fetch('/api/login', {
-        method: 'GET',
-        signal,
-      })
-        .then((response) => {
-          return response.json();
-        })
-        .then((response: LoginCheck) => {
-          if (response.isLoggedIn && response.user) {
-            localStorage.setItem('uid', response.user.uid);
-            setUid(response.user.uid);
-            getMessages().then((data) => {
-              setMessages(data);
-            });
-          } else {
-            router.replace('/');
-          }
-        });
-    } catch (error) {}
-
-    return () => {
-      abortController.abort();
-    };
-  }, [router]);
+  const session = useSession();
+  
+  if (!session) {
+    router.replace('/');
+  }
   
   async function signOutUser() {
-    await signOut(authConfig);
+    await signOut({redirect: true});
 
     const response = await fetch("http://localhost:3000/api/signout", {
       method: "POST",
